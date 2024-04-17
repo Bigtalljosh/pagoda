@@ -5,7 +5,6 @@ package runtime
 import (
 	"time"
 
-	"github.com/mikestefanello/pagoda/ent/passwordtoken"
 	"github.com/mikestefanello/pagoda/ent/schema"
 	"github.com/mikestefanello/pagoda/ent/user"
 )
@@ -14,16 +13,6 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	passwordtokenFields := schema.PasswordToken{}.Fields()
-	_ = passwordtokenFields
-	// passwordtokenDescHash is the schema descriptor for hash field.
-	passwordtokenDescHash := passwordtokenFields[0].Descriptor()
-	// passwordtoken.HashValidator is a validator for the "hash" field. It is called by the builders before save.
-	passwordtoken.HashValidator = passwordtokenDescHash.Validators[0].(func(string) error)
-	// passwordtokenDescCreatedAt is the schema descriptor for created_at field.
-	passwordtokenDescCreatedAt := passwordtokenFields[1].Descriptor()
-	// passwordtoken.DefaultCreatedAt holds the default value on creation for the created_at field.
-	passwordtoken.DefaultCreatedAt = passwordtokenDescCreatedAt.Default.(func() time.Time)
 	userHooks := schema.User{}.Hooks()
 	user.Hooks[0] = userHooks[0]
 	userFields := schema.User{}.Fields()

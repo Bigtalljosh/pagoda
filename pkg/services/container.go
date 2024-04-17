@@ -42,15 +42,6 @@ type Container struct {
 	// ORM stores a client to the ORM
 	ORM *ent.Client
 
-	// Mail stores an email sending client
-	Mail *MailClient
-
-	// Auth stores an authentication client
-	Auth *AuthClient
-
-	// TemplateRenderer stores a service to easily render and cache templates
-	TemplateRenderer *TemplateRenderer
-
 	// Tasks stores the task client
 	Tasks *TaskClient
 }
@@ -64,9 +55,6 @@ func NewContainer() *Container {
 	c.initCache()
 	c.initDatabase()
 	c.initORM()
-	c.initAuth()
-	c.initTemplateRenderer()
-	c.initMail()
 	c.initTasks()
 	return c
 }
@@ -173,25 +161,6 @@ func (c *Container) initORM() {
 	c.ORM = ent.NewClient(ent.Driver(drv))
 	if err := c.ORM.Schema.Create(context.Background(), schema.WithAtlas(true)); err != nil {
 		panic(fmt.Sprintf("failed to create database schema: %v", err))
-	}
-}
-
-// initAuth initializes the authentication client
-func (c *Container) initAuth() {
-	c.Auth = NewAuthClient(c.Config, c.ORM)
-}
-
-// initTemplateRenderer initializes the template renderer
-func (c *Container) initTemplateRenderer() {
-	c.TemplateRenderer = NewTemplateRenderer(c.Config)
-}
-
-// initMail initialize the mail client
-func (c *Container) initMail() {
-	var err error
-	c.Mail, err = NewMailClient(c.Config, c.TemplateRenderer)
-	if err != nil {
-		panic(fmt.Sprintf("failed to create mail client: %v", err))
 	}
 }
 

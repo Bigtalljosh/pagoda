@@ -43,9 +43,7 @@ func TestServeCachedPage(t *testing.T) {
 
 	// Login and try again
 	tests.InitSession(ctx)
-	err = c.Auth.Login(ctx, usr.ID)
 	require.NoError(t, err)
-	_ = tests.ExecuteMiddleware(ctx, LoadAuthenticatedUser(c.Auth))
 	err = tests.ExecuteMiddleware(ctx, ServeCachedPage(c.Cache))
 	assert.Nil(t, err)
 }

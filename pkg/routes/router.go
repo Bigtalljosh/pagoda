@@ -15,6 +15,7 @@ import (
 	echomw "github.com/labstack/echo/v4/middleware"
 )
 
+/*
 const (
 	routeNameForgotPassword       = "forgot_password"
 	routeNameForgotPasswordSubmit = "forgot_password.submit"
@@ -32,7 +33,7 @@ const (
 	routeNameHome                 = "home"
 	routeNameSearch               = "search"
 )
-
+*/
 // BuildRouter builds the router
 func BuildRouter(c *services.Container) {
 	// Static files with proper cache control
@@ -63,7 +64,6 @@ func BuildRouter(c *services.Container) {
 			Timeout: c.Config.App.Timeout,
 		}),
 		session.Middleware(sessions.NewCookieStore([]byte(c.Config.App.EncryptionKey))),
-		middleware.LoadAuthenticatedUser(c.Auth),
 		middleware.ServeCachedPage(c.Cache),
 		echomw.CSRFWithConfig(echomw.CSRFConfig{
 			TokenLookup: "form:csrf",
@@ -83,22 +83,12 @@ func BuildRouter(c *services.Container) {
 }
 
 func navRoutes(c *services.Container, g *echo.Group, ctr controller.Controller) {
-	home := home{Controller: ctr}
-	g.GET("/", home.Get).Name = routeNameHome
-
-	search := search{Controller: ctr}
-	g.GET("/search", search.Get).Name = routeNameSearch
-
-	about := about{Controller: ctr}
-	g.GET("/about", about.Get).Name = routeNameAbout
-
-	contact := contact{Controller: ctr}
-	g.GET("/contact", contact.Get).Name = routeNameContact
-	g.POST("/contact", contact.Post).Name = routeNameContactSubmit
+	//home := home{Controller: ctr}
+	//g.GET("/", home.Get).Name = routeNameHome
 }
 
 func userRoutes(c *services.Container, g *echo.Group, ctr controller.Controller) {
-	logout := logout{Controller: ctr}
+/* 	logout := logout{Controller: ctr}
 	g.GET("/logout", logout.Get, middleware.RequireAuthentication()).Name = routeNameLogout
 
 	verifyEmail := verifyEmail{Controller: ctr}
@@ -123,5 +113,5 @@ func userRoutes(c *services.Container, g *echo.Group, ctr controller.Controller)
 	)
 	reset := resetPassword{Controller: ctr}
 	resetGroup.GET("/token/:user/:password_token/:token", reset.Get).Name = routeNameResetPassword
-	resetGroup.POST("/token/:user/:password_token/:token", reset.Post).Name = routeNameResetPasswordSubmit
+	resetGroup.POST("/token/:user/:password_token/:token", reset.Post).Name = routeNameResetPasswordSubmit */
 }
